@@ -39,8 +39,15 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
+# 다른 사람들이 만든 앱을 넣어줄거임
+THIRD_PARTY_APPS = [
+    "django_countries",
+]
+
 USER_APPS = [
+    "core.apps.CoreConfig",
     "users.apps.UsersConfig",
+    "rooms.apps.RoomsConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + USER_APPS
