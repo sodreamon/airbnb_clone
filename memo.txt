@@ -1,0 +1,206 @@
+강의 = 8.0
+
+QuerySet 는 데이터베이스로 부터 온 장고 objects
+users.User 를 rooms.Room 에 ForeignKey해서 가져온경우
+<콘솔> users.models.User > room_set 이라고 뜸
+set 은 ForeignKey 의 대상이 element를 얻어내는 방법임
+room_set을 다른 이름으로 바꾸려면 related_name="" 사용(models.{class})에서 <예시 rooms.models.Room 확인>
+related_name은 Room에서 User를 끌어 썼으면 User.objects.{related_name}이 됨
+{username} = User.objects.get(username='{username}') 식으로 지정해줘야 username사용가능
+
+all()는 web django document. QuerySet API reference에 있음
+
+<console><예시>
+>python manage.py shell
+>from users.models import User
+>mute = User.objects.get(username='mute')
+>mute.rooms.all()
+
+<console><예시>
+>>> from rooms.models import Room
+>>> room = Room.objects.get(id=1)
+# >>> room = Room.objects.get(pk=1) 위와 같은 뜻
+>>> room.amenities.all()
+<QuerySet [<Amenity: shawer>, <Amenity: WiFi>, <Amenity: washer>]>
+위는 ManyToManyField의 경우를 보여줌
+
+<console><예시><filter()>
+>>> startswith = User.objects.filter(username__startswith='mu') 
+>>> print(startswith)
+<QuerySet [<User: mute>]>
+앞 글자로 찾기
+
+
+
+
+시간대 변경
+setting.py > TIME_ZONE 'Asia/Seoul'
+
+
+
+
+
+서버구동
+
+python manage.py runserver
+
+
+
+
+
+
+admin서버
+
+python manage.py migrate
+
+
+
+
+
+
+admin superuser
+
+python manage.py createsuperuser
+
+
+
+
+
+
+###setting.py
+auth user custom
+
+AUTH_USER_MODEL
+
+만든 앱들을 setting.py에 등록해줘야 장고가 인식함
+"users.apps.UsersConfig"
+
+
+
+
+
+###users.models(직접만듬)
+custom user model 만들기
+model field column
+
+비어있을 경우 (default='') 또는 (null = True) 입력
+선택창 -> charField에 choices 만들기
+
+
+
+
+
+###users.admin(직접만듬)
+admin 정보창 fieldsets 변경
+fieldsets = (("Banana", {"fields": ("avatar", "gender", "bio",)}),)
+fieldsets을 지정하면 이전에 있던 field 사라짐
+fieldsets = UserAdmin.fieldsets + (
+        ("Banana", {"fields": ("avatar", "gender", "bio",)}),
+    )
+라고 해야 원래있던 fieldsets(이건 디폴트 fieldsets)를 포함시킴
+
+
+
+
+
+
+###core.models(직접만듬)
+각 app들의 models에서 사용할 field들을 미리 만들어놓음
+데이터 베이스에 저장하지 않기를 바라는 경우
+class Meta:
+        abstract = True 사용
+DateTimeField는 auto_now_add(model이 생성된 날짜 구하기), auto_now(새로운 날짜로 업데이트) 기능 있음(자동 날짜 시간 입력)
+models.DateTimeField(auto_now_add=True)
+
+
+
+
+
+###rooms.models(직접만듬)
+host라는 model은 users의 model을 가져왔음
+users를 import해야함
+host = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
+ForeignKey("users.User" 라고 쓰면 users를 import하지 않아도 됨
+on_delete=models.CASACADE는 user_models.User를 삭제하면 폭포처럼 자식 모델들도 함께 없어짐(자식모델을 놔두는 PROTECT도 있음)
+room_type = models.ForeignKey(RoomType, on_delete=models.SET_NULL, null=True) 
+ForeignKey는 다른 앱의 model을 이어주는 함수
+ForeingKey는 일대다 관계, 일 = user 다 = room (user는 여러 room을 가질 수 있음, room은 여러 user를 가질 수 없음) user는 아빠모델 room은 자식모델
+
+특정 값을 str으로 변환하여 제목 등등에 띄어주려면
+def __str__(self):
+        return self.name 사용 name은 rooms의 모델 name을 사용함
+
+여러 선택지를 만들어서 카테고리 모델을 넣어야하는 경우 다대다 ManyToManyField를 사용
+(models.RoomType)의 내용을 추가하려면 rooms.admin에 추가해줘야함
+@admin.register(models.RoomType)
+class ItemAdmin(admin.modelAdmin):
+    pass
+
+django에서 model클래스 뒤에 자동으로 s 붙히는 걸 바꾸려면 
+django document.model meta options.verbose name plural 사용
+django에서 model클래스가 camel식으로 표현되는 걸 바꾸려면
+django document.model meta options.verbose name 사용
+
+model 클래스 내의 항목 순서 (created, name) 등을 정하려면
+django document.model meta options.ordering 사용
+
+
+
+
+
+
+####
+rooms.admin
+admin 페이지 형식을 추가하거나 수정하려면
+web django document.the django admin site. ModelAdmin options
+
+admin 내용을 print 하려면 list_display 등을 사용
+filter를 적용하려면 
+
+대소문자 구분 startswith  <->  istartswith
+
+option에서 ForeignField는 __를 사용한다
+search_fields = ("=city", "host__username")
+
+filter_forizontal = ()
+ManyToManyField에서 사용
+ManyToManyField 안의 내용들을 넣고 빼고 검색, 추가 할 수 있도록 만듬
+
+'classes': ('collapse',),
+fieldset에서 사용, {}안에 'fields': 앞에 붙여준다
+해당 fieldset을 접었다 펼 수 있는 기능 부여
+
+ordering = ('') 
+클래스 내 print 순서 지정
+
+ManyToManyField를 list_display에 포함 시키기 위해서 함수를 줘야함.
+def count_amenities(self, obj):
+        return 'Potato'
+count_amenities.short_description = 'hello sexy'
+(list_display 에 count_ameities 가 있어야함)
+    def count_amenities(self, obj):
+        return obj.amenities.count()
+
+@admin.register(models.RoomType, models.Facility, models.Amenity, models.HouseRule)
+class ItemAdmin(admin.ModelAdmin):
+이 경우 list_display를 추가하면 tuple 안의 4개 모두 list_display가 생성된다.
+예시에서 4 모두 related_name='rooms'를 가지고 있기 때문에 함수 used_by(self, obj) return obj.rooms.count()를 할 수 있었다.
+
+
+
+
+
+
+### reviews.models
+
+def __str__(self):
+        return
+에서 ForeignKey가 지정된 경우
+ room = models.ForeignKey("rooms.Room" 등등
+rooms.Room에 들어있는 object를 return 가능하다
+return self.room.country
+
+return f"{self.review} - {self.room}"
+review - room 의 방식으로 프린트됨
+
+return self.room.host.username은 return self.user와 같이 프린트 됨.
