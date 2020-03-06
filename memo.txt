@@ -1,4 +1,9 @@
-강의 = 8.0
+강의 = 8.1
+
+admin과 프론트앤드 모두에서 사용하려면 각 models에 생성(함수 포함)(reviews.models 참조),
+admin에서만 사용하려면 각 admin에 생성(함수 포함)
+
+
 
 QuerySet 는 데이터베이스로 부터 온 장고 objects
 users.User 를 rooms.Room 에 ForeignKey해서 가져온경우
@@ -99,6 +104,8 @@ fieldsets = UserAdmin.fieldsets + (
     )
 라고 해야 원래있던 fieldsets(이건 디폴트 fieldsets)를 포함시킴
 
+list_display에 booleanField를 넣으려면 is_superuser, is_active 처럼 is_를 붙여줘야한다.
+
 
 
 
@@ -143,6 +150,13 @@ django document.model meta options.verbose name 사용
 
 model 클래스 내의 항목 순서 (created, name) 등을 정하려면
 django document.model meta options.ordering 사용
+
+def total_rating(self):
+        all_reviews = self.reviews.all()
+        for review in all_reviews:
+            return review.rating_average()
+는 Room에 related_name으로 reviews가 있기 때문에 reviews.models.Review를 가져왔고 Review에 속한 rating_average()를 가져왔다.
+
 
 
 
@@ -204,3 +218,8 @@ return f"{self.review} - {self.room}"
 review - room 의 방식으로 프린트됨
 
 return self.room.host.username은 return self.user와 같이 프린트 됨.
+
+def rating_average(self):에서 연산 함수는 가급적 object 만들어주고 object를 return 하는게 이쁨
+float값(소수값)을 반올림 하려면 round 함수 사용
+web django document. Database Functions 참조
+rating_average.short_description = 'Avg.'를 이용해 rating_average가 보여지는 이름을 대신할 수 있다.(자동 대문자화 됨)
