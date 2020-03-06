@@ -53,7 +53,7 @@ class Photo(core_models.TimeStapedModel):
     """ Photo Model Definition """
 
     caption = models.CharField(max_length=80)
-    file = models.ImageField()
+    file = models.ImageField(upload_to="room_photos")
     room = models.ForeignKey("Room", related_name="photos", on_delete=models.CASCADE)
     # Room을 ""없이 입력하면 Room이 Photo아래에 있어서 못가져옴
 

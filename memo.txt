@@ -1,4 +1,4 @@
-강의 = 8.3 10:44
+강의 = 8.5
 
 admin과 프론트앤드 모두에서 사용하려면 각 models에 생성(함수 포함)(reviews.models 참조),
 admin에서만 사용하려면 각 admin에 생성(함수 포함)
@@ -76,14 +76,43 @@ python manage.py createsuperuser
 
 
 
-###setting.py
+###settings.py
 auth user custom
 
 AUTH_USER_MODEL
 
-만든 앱들을 setting.py에 등록해줘야 장고가 인식함
+만든 앱들을 settings.py에 등록해줘야 장고가 인식함
 "users.apps.UsersConfig"
 
+<----사진 경로 만들기---->
+web document. setting. MEDIA_ROOT (setting.py에 입력)
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+위 처럼 uploads라는 폴더를 만들어주고 미디어를 업로드 시킬 수 있음
+.gitignore에 uploads/ 라고 추가해주는게 좋음
+avatar = models.ImageField(upload_to="avatars", blank=True)
+위 처럼 ImageField 또는 FileField에 upload_to=''추가(upload 폴더에 ''폴더를 만들어 image or file을 넣어준다는 뜻
+
+MEDIA_URL = '/media/'
+image나 file로 연결되는 media라는 절대 경로를 만듬
+http://127.0.0.1:8000/media/room_photos/%EC%A6%9... 라는 형식으로 url변경
+<----끝---->
+
+
+
+
+
+
+### url.py
+<----사진 경로 만들기---->
+from django.conf import settings
+settings.py를 연결할 때는 명확하게 해야함
+
+from django.conf.urls.static import static
+위는 static파일 import
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+debug 모드일 때 MEDIA_URL과 MEDIA_ROOT를 연결하고 urlpatterns에 해당 static을 추가해준다는 뜻
+<----끝---->
 
 
 
@@ -255,3 +284,9 @@ boolean = True함수는 장고 내에서 O X 이모지를 만들어준다.
 
 search_fields = ('')
 ''안의 내용을 검색 ^(startswith), = 등 사용가능
+
+
+
+
+
+
