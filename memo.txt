@@ -1,4 +1,4 @@
-강의 = 8.2
+강의 = 8.3 10:44
 
 admin과 프론트앤드 모두에서 사용하려면 각 models에 생성(함수 포함)(reviews.models 참조),
 admin에서만 사용하려면 각 admin에 생성(함수 포함)
@@ -34,6 +34,10 @@ all()는 web django document. QuerySet API reference에 있음
 >>> print(startswith)
 <QuerySet [<User: mute>]>
 앞 글자로 찾기
+
+"".join()
+()안의 내용에서 순수하게 string만 을 출력한다. 출력되는 내용들 사이의 구분이 없어짐
+내용들 사이를 띄우기 위해 " ".join() 식으로 ""안에 구분할 수 있는 것을 넣어줌
 
 
 
@@ -179,7 +183,7 @@ filter를 적용하려면
 option에서 ForeignField는 __를 사용한다
 search_fields = ("=city", "host__username")
 
-filter_forizontal = ()
+filter_horizontal = ()
 ManyToManyField에서 사용
 ManyToManyField 안의 내용들을 넣고 빼고 검색, 추가 할 수 있도록 만듬
 
@@ -242,3 +246,12 @@ now = timezone.now()
 return now > self.check_in and now < self.check_out
 in_progress.boolean = True
 boolean = True함수는 장고 내에서 O X 이모지를 만들어준다.
+
+
+
+
+
+### list.admin
+
+search_fields = ('')
+''안의 내용을 검색 ^(startswith), = 등 사용가능
