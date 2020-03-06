@@ -1,4 +1,4 @@
-강의 = 8.1
+강의 = 8.2
 
 admin과 프론트앤드 모두에서 사용하려면 각 models에 생성(함수 포함)(reviews.models 참조),
 admin에서만 사용하려면 각 admin에 생성(함수 포함)
@@ -153,9 +153,12 @@ django document.model meta options.ordering 사용
 
 def total_rating(self):
         all_reviews = self.reviews.all()
+        all_ratings = 0
         for review in all_reviews:
-            return review.rating_average()
+            all_ratings += review.rating_average()
+        return all_ratings / len(all_reviews)
 는 Room에 related_name으로 reviews가 있기 때문에 reviews.models.Review를 가져왔고 Review에 속한 rating_average()를 가져왔다.
+all_rating을 0으로 두고 별점을 더해 두었고 len(all_reviews)리뷰 갯수를 구해 나누어 주었다.
 
 
 
@@ -223,3 +226,19 @@ def rating_average(self):에서 연산 함수는 가급적 object 만들어주�
 float값(소수값)을 반올림 하려면 round 함수 사용
 web django document. Database Functions 참조
 rating_average.short_description = 'Avg.'를 이용해 rating_average가 보여지는 이름을 대신할 수 있다.(자동 대문자화 됨)
+
+
+
+
+
+
+
+### reservation.models
+
+날짜 및 시간 정보를 가져오려면
+from django.utils import timezone
+now = timezone.now()
+아래는 now가 범위내에 해당할 경우 True가 된다.
+return now > self.check_in and now < self.check_out
+in_progress.boolean = True
+boolean = True함수는 장고 내에서 O X 이모지를 만들어준다.
