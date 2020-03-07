@@ -1,4 +1,4 @@
-강의 = 8.6
+강의 = 8.7
 
 django console에서 print했을 때 string으로 나와도 print(type())으로 확인할 수 있음
 경로확인<예) rooms.admin.PhotoAdmin - print(obj.file.path)>
@@ -249,6 +249,24 @@ def get_thumbnail(self, obj):
         return mark_safe(f'<img width=50px src="{obj.file.url}" />')
 위 형식으로 mark_safe를 사용하고 rooms.Photo를 thumbnail로 나타낸것
 직접 사진 url을 img로 가져왔기 때문에 사진이 print됨
+
+raw_id_fields = ('host',)
+()안의 host 모델의 id를 admin 창 선택창으로 만들어주고 검색 기능 추가
+위 경우 User의 list_filter도 가져온다
+일대다 관계에서 유용, amenities같은 다대다 관계에서 쓰기 힘듬
+
+class PhotoInline(admin.TabularInline):
+    model = models.Photo
+PhotoAdmin을 다른 Admin에 사용하기 위해 만듬
+(web document InlineModelAdmin objects )
+위 경우 RoomAdmin에 inlines = (PhotoInline,) 추가 해줌
+결과는 RoomAdmin에 Photo 라는 fieldset을 만들어줌
+지정된 Room에서 Photo를 추가하기 때문에 Photo를 추가할 때 따로 Room object를 지정해줄 필요가 없음
+StackedInline, TabularInline 둘 중 하나 선택가능(생김새가 다름)
+마찬가지로 User에서도 Room을 가질 수 있음(user.admin에 rooms.models를 import해야함)
+이런 Inline관계는 ForeignKey가 있어야 가능함
+<class 'users.admin.PhotoUserInline'>: (admin.E202) 'rooms.Photo' has no ForeignKey to 'users.User'.
+ForeignKey가 없을경우 이런 에러가 뜸(users.User와 rooms.Photo는 ForeignKey가 없음)
 
 
 
