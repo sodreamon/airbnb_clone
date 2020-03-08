@@ -1,4 +1,17 @@
-강의 = 9.0
+강의 = 9.1
+
+### rooms.management.commands.loveyou.py
+
+(web Writing custom django-admin commands)
+fake user
+app(아무앱).management.__init__.py 만듬
+management.command 만듬
+command.__init__.py만듬
+command.loveyou.py
+
+
+
+
 
 def __init__(): 속한 class를 거치면 무조건 실행
 
