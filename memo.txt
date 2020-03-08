@@ -1,4 +1,4 @@
-강의 = 9.1
+강의 = 9.2
 
 ### rooms.management.commands.loveyou.py
 
@@ -9,6 +9,8 @@ management.command 만듬
 command.__init__.py만듬
 command.loveyou.py
 
+터미널 print색 바꾸기
+web Writing custom django-admin commands. BaseCommand.style
 
 
 
