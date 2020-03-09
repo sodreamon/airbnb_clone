@@ -41,6 +41,7 @@ DJANGO_APPS = [
 # 다른 사람들이 만든 앱을 넣어줄거임
 THIRD_PARTY_APPS = [
     "django_countries",
+    "django_seed",
 ]
 
 USER_APPS = [

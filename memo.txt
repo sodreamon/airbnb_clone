@@ -1,4 +1,8 @@
-강의 = 9.2
+강의 = 9.3
+
+### django_seed
+fake data
+https://github.com/Brobin/django-seed
 
 ### rooms.management.commands.loveyou.py
 
@@ -145,6 +149,10 @@ debug 모드일 때 MEDIA_URL과 MEDIA_ROOT를 연결하고 urlpatterns에 해�
 
 
 
+
+
+#### <---- users ----> ####
+
 ###users.models(직접만듬)
 custom user model 만들기
 model field column
@@ -171,6 +179,16 @@ list_display에 booleanField를 넣으려면 is_superuser, is_active 처럼 is_�
 
 
 
+###
+users.management.commands
+
+seed_user
+django_seed로 fake data 만드는 과정 
+
+
+
+
+
 
 ###core.models(직접만듬)
 각 app들의 models에서 사용할 field들을 미리 만들어놓음
@@ -183,6 +201,10 @@ models.DateTimeField(auto_now_add=True)
 
 
 
+
+
+
+#### <---- ROOMS ----> ####
 
 ###rooms.models(직접만듬)
 host라는 model은 users의 model을 가져왔음
@@ -246,8 +268,9 @@ upper() 전체 대문자
 
 
 
+
 ####
-rooms.admin
+rooms.admin1
 admin 페이지 형식을 추가하거나 수정하려면
 web django document.the django admin site. ModelAdmin options
 
@@ -319,7 +342,23 @@ def save_model(self, request, obj, form, change):
 
 
 
+### rooms.management.commands
 
+커맨드 만들기
+from django.core.management.base import BaseCommand
+를 import 해야함
+def handle(self, *args, **options):
+handle method로 command 행동을 지정 예) create 등등
+
+### 
+
+
+
+
+
+
+
+#### <---- REVIEWS ----> ####
 
 ### reviews.models
 
@@ -344,9 +383,9 @@ rating_average.short_description = 'Avg.'를 이용해 rating_average가 보여�
 
 
 
+#### <---- reservations ----> ####
 
-
-### reservation.models
+### reservations.models
 
 날짜 및 시간 정보를 가져오려면
 from django.utils import timezone
@@ -359,8 +398,9 @@ boolean = True함수는 장고 내에서 O X 이모지를 만들어준다.
 
 
 
+#### <---- lists ----> ####
 
-### list.admin
+### lists.admin
 
 search_fields = ('')
 ''안의 내용을 검색 ^(startswith), = 등 사용가능
