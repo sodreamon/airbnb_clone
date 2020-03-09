@@ -350,8 +350,12 @@ from django.core.management.base import BaseCommand
 def handle(self, *args, **options):
 handle method로 command 행동을 지정 예) create 등등
 
-### 
+.seed_rooms
+lambda x: 사용 random.randint()사용
+int 범위 제한
 
+내장 유틸 flatten 사용
+이상한 모양 제거
 
 
 

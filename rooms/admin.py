@@ -28,6 +28,7 @@ class RoomAdmin(admin.ModelAdmin):
     """ Room Admin Definition """
 
     inlines = (PhotoInline,)
+    # 바로 위 PhotoInline을 가져옴, PhotoAdmin을 RoomAdmin에서 쓰기 위해서
 
     fieldsets = (
         (
@@ -90,6 +91,10 @@ class RoomAdmin(admin.ModelAdmin):
 
     def count_photos(self, obj):
         return obj.photos.count()
+        # Photo에 Room을 ForeignKey 했기에 Room에 photos(related_name)가 생김
+
+    count_photos.short_description = "Photo Count"
+    # count_photos 이름 새로 지정
 
 
 @admin.register(models.Photo)
